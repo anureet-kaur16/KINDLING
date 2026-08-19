@@ -8,7 +8,7 @@ Built for a frontend take-home challenge (Part 2: "The Premium Home Page").
 
 ## Live demo
 
-[Add your deployed URL here once you've shipped it]
+https://zingy-lolly-4a8235.netlify.app
 
 ## What's here
 
@@ -60,7 +60,7 @@ No build step needed. Either:
 
 Since it's a single static file, any free static host works:
 
-- **Netlify Drop** — drag the `kindling` folder onto [app.netlify.com/drop](https://app.netlify.com/drop)
+- **Netlify Drop** — drag the `kindling` folder onto [app.netlify.com/drop](https://zingy-lolly-4a8235.netlify.app)
 - **GitHub Pages** — push this folder to a repo, enable Pages on the `main`
   branch, and it'll serve `index.html` automatically
 - **Vercel** — `vercel deploy` from inside the folder
