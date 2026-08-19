@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kindling — Don't let the fire go out</title>
+<meta name="description" content="Kindling turns your daily habit streak into a flame that grows with you." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: ivory;
+    --bg-elevated: white;
+    --ink: black;
+    --ink-soft: dimgray;
+    --flame: orangered;
+    --flame-soft: gold;
+    --ember: firebrick;
+    --calm: seagreen;
+    --border: lightgray;
+    --font-display:'Poppins', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --radius: 16px;
+  }
+  [data-theme="dark"]{
+    --bg: black;
+    --bg-elevated: darkslategray;
+    --ink: ivory;
+    --ink-soft: silver;
+    --border: dimgray;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-body);
+    transition:background .3s ease, color .3s ease;
+  }
+  h1,h2,h3{ font-family:var(--font-display); margin:0; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  button{ font-family:var(--font-body); cursor:pointer; }
+  :focus-visible{ outline:3px solid var(--ember); outline-offset:2px; }
+
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 24px; }
+
+  /* Nav */
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 24px; border-bottom:1px solid var(--border); }
+  .logo{ font-family:var(--font-display); font-weight:700; font-size:22px; text-decoration:none; color:var(--ink); display:flex; gap:8px; align-items:center; }
+  .nav-right{ display:flex; align-items:center; gap:14px; }
+  .theme-toggle{ border:1px solid var(--border); background:var(--bg-elevated); border-radius:999px; width:44px; height:44px; font-size:18px; }
+
+  .btn{ display:inline-block; padding:12px 22px; border-radius:999px; border:none; font-weight:700; text-decoration:none; transition:transform .15s ease; }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-primary{ background:var(--flame); color:white; }
+  .btn-ghost{ background:transparent; border:1.5px solid var(--border); color:var(--ink); }
+
+  /* Hero */
+  .hero{ padding:64px 0; display:grid; gap:40px; grid-template-columns:1fr; align-items:center; }
+  @media (min-width:900px){ .hero{ grid-template-columns:1fr 1fr; } }
+  .hero h1{ font-size:clamp(32px,5vw,52px); line-height:1.1; }
+  .hero h1 span{ color:var(--flame); }
+  .hero p{ margin-top:18px; font-size:18px; color:var(--ink-soft); max-width:460px; line-height:1.5; }
+  .hero-actions{ margin-top:28px; display:flex; gap:14px; flex-wrap:wrap; }
+
+  .flame-box{ display:flex; justify-content:center; }
+  .flame{ font-size:120px; animation:flicker 2.4s ease-in-out infinite; cursor:pointer; }
+  @keyframes flicker{
+    0%,100%{ transform:scale(1) rotate(0deg); }
+    50%{ transform:scale(1.06) rotate(-2deg); }
+  }
+  @media (prefers-reduced-motion: reduce){ .flame{ animation:none; } }
+
+  /* Sections */
+  section{ padding:72px 0; }
+  .section-head{ max-width:560px; margin-bottom:40px; }
+  .eyebrow{ color:var(--calm); font-weight:700; text-transform:uppercase; font-size:13px; letter-spacing:.06em; }
+  .section-head h2{ font-size:clamp(26px,4vw,36px); margin-top:8px; }
+  .section-head p{ margin-top:12px; color:var(--ink-soft); font-size:16px; line-height:1.5; }
+
+  .reveal{ opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* Product proof */
+  .proof-section{ background:var(--bg-elevated); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .card{ max-width:420px; margin:0 auto; border:1px solid var(--border); border-radius:var(--radius); padding:24px; background:var(--bg); }
+  .card-top{ display:flex; justify-content:space-between; align-items:center; }
+  .card-title{ font-family:var(--font-display); font-weight:600; font-size:19px; }
+  .card-sub{ color:var(--ink-soft); font-size:13px; margin-top:2px; }
+  .tag{ font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; border:1px solid var(--border); color:var(--ink-soft); }
+  .week{ display:flex; gap:8px; margin-top:22px; }
+  .day{ flex:1; aspect-ratio:1; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; border:1px solid var(--border); }
+  .day.done{ background:var(--flame-soft); border-color:var(--flame); }
+  .day.today{ border:2px dashed var(--ember); }
+  .streak-line{ margin-top:18px; display:flex; align-items:center; gap:8px; font-weight:600; color:var(--ember); }
+
+  /* How it works */
+  .steps{ display:grid; gap:20px; grid-template-columns:1fr; }
+  @media (min-width:760px){ .steps{ grid-template-columns:repeat(3,1fr); } }
+  .step{ border:1px solid var(--border); border-radius:var(--radius); padding:22px; background:var(--bg-elevated); }
+  .step-num{ color:var(--flame); font-weight:700; font-family:var(--font-display); }
+  .step h3{ margin-top:10px; font-size:18px; }
+  .step p{ margin-top:8px; color:var(--ink-soft); font-size:14.5px; line-height:1.5; }
+
+  /* Features */
+  .features{ display:grid; gap:18px; grid-template-columns:1fr; }
+  @media (min-width:700px){ .features{ grid-template-columns:1fr 1fr; } }
+  .feature{ border:1px solid var(--border); border-radius:var(--radius); padding:22px; background:var(--bg-elevated); transition:transform .15s ease; }
+  .feature:hover{ transform:translateY(-3px); }
+  .feature h3{ font-size:17px; }
+  .feature p{ margin-top:8px; color:var(--ink-soft); font-size:14.5px; line-height:1.5; }
+
+  /* CTA banner */
+  .cta-banner{ background:var(--ink); color:var(--bg); border-radius:var(--radius); padding:52px 32px; text-align:center; margin:0 24px; }
+  .cta-banner h2{ font-size:clamp(24px,4vw,34px); }
+  .cta-banner p{ margin-top:10px; opacity:.8; }
+  .cta-banner .hero-actions{ justify-content:center; margin-top:24px; }
+  .cta-banner .btn-ghost{ border-color:var(--border); color:var(--bg); }
+
+  footer{ padding:40px 24px; text-align:center; color:var(--ink-soft); font-size:13px; }
+
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(140%);
+    background:var(--ink); color:var(--bg); padding:12px 20px; border-radius:999px; font-weight:700; font-size:14px;
+    transition:transform .35s ease; z-index:100;
+  }
+  .toast.show{ transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="#top">🔥 Kindling</a>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+    <a class="btn btn-primary" href="#cta">Start your streak</a>
+  </div>
+</nav>
+
+<header class="hero wrap" id="top">
+  <div>
+    <h1>Don't let the <span>fire</span> go out.</h1>
+    <p>Kindling turns your daily habit streak into a flame that actually feels alive. Show up, it grows. Miss a day, it's honest about that too.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#cta">Start your streak — free</a>
+      <a class="btn btn-ghost" href="#how">See how it works</a>
+    </div>
+  </div>
+  <div class="flame-box">
+    <div class="flame" id="flameIcon" title="Click me">🔥</div>
+  </div>
+</header>
+
+<section class="proof-section" id="proof">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Your streak</span>
+      <h2>One glance tells you exactly where you stand.</h2>
+      <p>No hidden points, no fake leaderboard. Just your habit and your week, laid out honestly.</p>
+    </div>
+    <div class="card reveal">
+      <div class="card-top">
+        <div>
+          <div class="card-title">Morning Run</div>
+          <div class="card-sub">Example streak · Day 14</div>
+        </div>
+        <span class="tag">On track</span>
+      </div>
+      <div class="week">
+        <div class="day done">M</div>
+        <div class="day done">T</div>
+        <div class="day done">W</div>
+        <div class="day done">T</div>
+        <div class="day done">F</div>
+        <div class="day today">S</div>
+        <div class="day">S</div>
+      </div>
+      <div class="streak-line">🔥 14-day streak</div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps to keep it burning.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">Step 1</div>
+        <h3>Pick a habit</h3>
+        <p>One habit at a time. Running, reading, drinking water — your call.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">Step 2</div>
+        <h3>Check in each day</h3>
+        <p>One tap when you've done it. Takes less time than opening the app did.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">Step 3</div>
+        <h3>Watch your flame grow</h3>
+        <p>Consistency builds the flame. A missed day dims it — no punishment, just honesty.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why Kindling</span>
+      <h2>Built to reflect real consistency, not gamify you into burnout.</h2>
+    </div>
+    <div class="features">
+      <div class="feature reveal">
+        <h3>🕯️ Simple daily check-in</h3>
+        <p>One tap, once a day. No streak-saving tricks or paid freezes.</p>
+      </div>
+      <div class="feature reveal">
+        <h3>🔥 A flame that means something</h3>
+        <p>It grows with real days done — not points, badges, or streak insurance.</p>
+      </div>
+      <div class="feature reveal">
+        <h3>😌 Missed a day? That's fine</h3>
+        <p>Kindling shows it plainly and lets you start again the next day.</p>
+      </div>
+      <div class="feature reveal">
+        <h3>🧩 Works for any habit</h3>
+        <p>Running, journaling, sleep, water — one habit, tracked clearly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cta">
+  <div class="cta-banner reveal">
+    <h2>Your streak starts with today.</h2>
+    <p>No credit card, no seven-day trial pressure. Just start.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#top">Start your streak — free</a>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Kindling. A concept project.</footer>
+
+<div class="toast" id="toast">🔥 You kept it lit — nice.</div>
+
+<script>
+  // Dark mode (in-memory only, no storage APIs)
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    root.setAttribute('data-theme','dark');
+    toggle.textContent = '☀️';
+  }
+  toggle.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    if(isDark){ root.removeAttribute('data-theme'); toggle.textContent = '🌙'; }
+    else{ root.setAttribute('data-theme','dark'); toggle.textContent = '☀️'; }
+  });
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Easter egg: click the flame 3 times
+  const flame = document.getElementById('flameIcon');
+  const toastEl = document.getElementById('toast');
+  let clicks = 0;
+  flame.addEventListener('click', () => {
+    clicks++;
+    if(clicks === 3){
+      clicks = 0;
+      toastEl.classList.add('show');
+      setTimeout(() => toastEl.classList.remove('show'), 2600);
+    }
+  });
+</script>
+
+</body>
+</html>
